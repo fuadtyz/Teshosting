@@ -1,179 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flexible Plugin Generator with Fun!</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        header {
-            background: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-        }
-        main {
-            padding: 20px;
-            max-width: 800px;
-            margin: 20px auto;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        input, button {
-            display: block;
-            width: 100%;
-            margin: 10px 0;
-            padding: 10px;
-            font-size: 1rem;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>hati hati Website</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f9f9f9;
+      padding: 50px;
+    }
+    #message {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background: #ff0000;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+    }
+    button:hover {
+      background: #cc0000;
+    }
+    #hiddenButton {
+      position: absolute;
+      top: 5%;
+      left: 5%;
+      background: transparent;
+      color: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 1000;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Flexible Plugin Generator with Fun!</h1>
-    </header>
-    <main>
-        <h2>Upload Addon Zip and Generate Plugin</h2>
-        <form id="pluginForm">
-            <label for="pluginName">Plugin Name:</label>
-            <input type="text" id="pluginName" placeholder="Enter plugin name" required>
+  <h1>Uh-oh! You are trapped!</h1>
+  <p id="message">You can't leave this page 😁</p>
+  <button onclick="alert('Nope, you can\'t exit!')">Click Me!</button>
+  <button id="hiddenButton" onclick="escapeTrap()">Secret Exit</button>
+  <script>
+    document.addEventListener('keydown', (e) => {
+      e.preventDefault(); // Blokir shortcut keyboard
+    });
 
-            <label for="authorName">Author Name:</label>
-            <input type="text" id="authorName" placeholder="Enter author name" required>
+    window.onbeforeunload = function () {
+      return "Are you sure you want to leave?";
+    };
 
-            <label for="addonZip">Upload Addon (ZIP):</label>
-            <input type="file" id="addonZip" accept=".zip" required>
+    setInterval(() => {
+      alert("You are stuck here!");
+    }, 1200000); // Pop-up setiap 20 menit (1200000 ms)
 
-            <button type="button" onclick="generateAddon()">Generate and Download</button>
-        </form>
-    </main>
-
-    <script>
-        async function generateAddon() {
-            const pluginName = document.getElementById('pluginName').value;
-            const authorName = document.getElementById('authorName').value;
-            const addonZip = document.getElementById('addonZip').files[0];
-
-            if (!pluginName || !authorName || !addonZip) {
-                alert("Please fill out all fields and upload a file.");
-                return;
-            }
-
-            const zip = new JSZip();
-            const addonZipContent = await addonZip.arrayBuffer();
-            const addonData = await zip.loadAsync(addonZipContent);
-
-            let customItems = [];
-            const resources = {};
-
-            // Process files in ZIP
-            await Promise.all(
-                Object.keys(addonData.files).map(async (relativePath) => {
-                    const file = addonData.files[relativePath];
-                    if (!file.dir) {
-                        const content = await file.async("string");
-                        if (relativePath.endsWith(".json")) {
-                            // Process JSON as custom item
-                            try {
-                                const itemData = JSON.parse(content);
-                                customItems.push(itemData);
-                            } catch {
-                                console.warn(`Invalid JSON file skipped: ${relativePath}`);
-                            }
-                        } else {
-                            // Add other files as resources
-                            resources[relativePath] = content;
-                        }
-                    }
-                })
-            );
-
-            // Generate plugin.yml
-            const pluginYml = `
-name: ${pluginName}
-main: ${pluginName.toLowerCase()}.Main
-version: 1.0.0
-api: [5.0.0]
-author: ${authorName}
-custom_items:
-${customItems.map(item => `  - id: ${item.id}\n    name: ${item.name}`).join('\n')}
-`;
-
-            // Generate Main.php
-            const mainPhp = `
-<?php
-
-namespace ${pluginName.toLowerCase()};
-
-use pocketmine\\plugin\\PluginBase;
-use pocketmine\\item\\ItemFactory;
-use pocketmine\\item\\ItemIdentifier;
-
-class Main extends PluginBase {
-    public function onEnable(): void {
-        $this->getLogger()->info("Plugin ${pluginName} has been enabled!");
-
-        // Register custom items
-${customItems.map(item => `        ItemFactory::getInstance()->register(new ItemIdentifier(${item.id}, 0), "${item.name}");`).join('\n')}
+    function escapeTrap() {
+      alert("Congratulations! You found the secret button!");
+      window.onbeforeunload = null; // Matikan blokir keluar
+      document.removeEventListener('keydown', (e) => e.preventDefault()); // Aktifkan keyboard kembali
     }
-
-    public function onDisable(): void {
-        $this->getLogger()->info("Plugin ${pluginName} has been disabled.");
-    }
-}
-`;
-
-            // Create ZIP
-            const pluginZip = new JSZip();
-            pluginZip.file("plugin.yml", pluginYml);
-            const srcFolder = pluginZip.folder("src/" + pluginName.toLowerCase());
-            srcFolder.file("Main.php", mainPhp);
-
-            // Add resources to ZIP
-            const resourcesFolder = pluginZip.folder("resources");
-            for (const [path, content] of Object.entries(resources)) {
-                resourcesFolder.file(path.replace(/^.*\//, ""), content);
-            }
-
-            // Generate ZIP file for download
-            pluginZip.generateAsync({ type: "blob" }).then(function (content) {
-                saveAs(content, `${pluginName}.zip`);
-
-                // Add fun alerts
-                triggerFunAlerts();
-            });
-        }
-
-        function triggerFunAlerts() {
-            alert("⚠️ Anda Terkena Malware! ⚠️");
-            setTimeout(() => {
-                alert("Tunggu sebentar... memperbaiki sistem...");
-                setTimeout(() => {
-                    alert("Haha! Bercanda kok. Tidak ada malware di sini. 😁");
-                    setTimeout(() => {
-                        alert("Plugin Anda sudah siap! Selamat menggunakan. 🎉");
-                    }, 2000);
-                }, 2000);
-            }, 2000);
-        }
-    </script>
+  </script>
 </body>
 </html>
