@@ -29,7 +29,8 @@
     button:hover {
       background: #cc0000;
     }
-    #hiddenButton: absolute;
+    #hiddenButton {
+      position: absolute;
       top: 5%;
       left: 5%;
       background: transparent;
@@ -41,9 +42,9 @@
   </style>
 </head>
 <body>
-  <h1>Uh-oh! You are trapped!</h1>
-  <p id="message">You can't leave this page 😁</p>
-  <button onclick="alert('Nope, you can\'t exit!')">Click Me!</button>
+  <h1>Oh no! You are trapped!</h1>
+  <p id="message">You cannot leave this page 😁</p>
+  <button onclick="alert('Nope! You can\'t escape!')">Click Me!</button>
   <button id="hiddenButton" onclick="escapeTrap()">Secret Exit</button>
   <script>
     // Blokir shortcut keyboard
@@ -59,7 +60,7 @@
     // Pop-up setiap 20 menit
     setInterval(() => {
       alert("You are stuck here!");
-    }, 1200000);
+    }, 1200000); // 20 menit dalam milidetik
 
     // Aktifkan mode fullscreen
     function goFullscreen() {
@@ -74,7 +75,7 @@
       }
     }
 
-    goFullscreen();
+    goFullscreen(); // Masuk ke mode fullscreen saat halaman dimuat
 
     // Fungsi untuk keluar melalui tombol rahasia
     function escapeTrap() {
