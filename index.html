@@ -3,46 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create VPS</title>
+    <title>Create Local VPS Simulation</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 0; }
-        .container { margin: 50px auto; padding: 20px; max-width: 400px; background: #fff; border-radius: 10px; }
-        input, select, button { width: 100%; margin: 10px 0; padding: 10px; }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            margin: 50px auto;
+            max-width: 400px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        input, select, button {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 1rem;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #status {
+            margin-top: 20px;
+            color: green;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Create Your VPS</h1>
+        <h1>Simulated VPS Creator</h1>
         <form id="vpsForm">
-            <input type="text" id="username" placeholder="Enter username" required>
+            <input type="text" id="username" placeholder="Username" required>
             <select id="os">
                 <option value="ubuntu">Ubuntu</option>
                 <option value="debian">Debian</option>
                 <option value="centos">CentOS</option>
             </select>
+            <input type="password" id="password" placeholder="Root Password" required>
             <button type="submit">Create VPS</button>
         </form>
         <p id="status"></p>
     </div>
     <script>
-        document.getElementById('vpsForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const os = document.getElementById('os').value;
+        document.getElementById("vpsForm").addEventListener("submit", function(event) {
+            event.preventDefault();
 
-            document.getElementById('status').innerText = 'Creating VPS...';
+            // Ambil input dari pengguna
+            const username = document.getElementById("username").value;
+            const os = document.getElementById("os").value;
+            const password = document.getElementById("password").value;
 
-            try {
-                const response = await fetch('http://your-server-ip:5000/create-vps', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, os })
-                });
-                const result = await response.json();
-                document.getElementById('status').innerText = result.message;
-            } catch (error) {
-                document.getElementById('status').innerText = 'Error occurred.';
-            }
+            const status = document.getElementById("status");
+            status.innerText = "Simulating VPS creation...";
+
+            // Simulasi pembuatan VPS (tanpa backend)
+            setTimeout(() => {
+                status.innerText = `VPS Created Successfully!\n
+                Username: ${username}\n
+                Operating System: ${os}\n
+                Root Password: ${password}\n
+                SSH Command: ssh root@127.0.0.1`;
+            }, 3000); // Simulasi proses selama 3 detik
         });
     </script>
 </body>
