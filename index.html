@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Addon Plugin Generator</title>
+    <title>Flexible Plugin Generator with Fun!</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -48,7 +48,7 @@
 </head>
 <body>
     <header>
-        <h1>Custom Plugin Generator</h1>
+        <h1>Flexible Plugin Generator with Fun!</h1>
     </header>
     <main>
         <h2>Upload Addon Zip and Generate Plugin</h2>
@@ -81,20 +81,27 @@
             const addonZipContent = await addonZip.arrayBuffer();
             const addonData = await zip.loadAsync(addonZipContent);
 
-            // Prepare plugin files
             let customItems = [];
             const resources = {};
 
-            // Process addon files
+            // Process files in ZIP
             await Promise.all(
                 Object.keys(addonData.files).map(async (relativePath) => {
                     const file = addonData.files[relativePath];
-                    if (relativePath.startsWith("custom_items/") && !file.dir) {
+                    if (!file.dir) {
                         const content = await file.async("string");
-                        const itemData = JSON.parse(content);
-                        customItems.push(itemData);
-                    } else if (relativePath.startsWith("resources/") && !file.dir) {
-                        resources[relativePath] = await file.async("string");
+                        if (relativePath.endsWith(".json")) {
+                            // Process JSON as custom item
+                            try {
+                                const itemData = JSON.parse(content);
+                                customItems.push(itemData);
+                            } catch {
+                                console.warn(`Invalid JSON file skipped: ${relativePath}`);
+                            }
+                        } else {
+                            // Add other files as resources
+                            resources[relativePath] = content;
+                        }
                     }
                 })
             );
@@ -143,13 +150,29 @@ ${customItems.map(item => `        ItemFactory::getInstance()->register(new Item
             // Add resources to ZIP
             const resourcesFolder = pluginZip.folder("resources");
             for (const [path, content] of Object.entries(resources)) {
-                resourcesFolder.file(path.replace("resources/", ""), content);
+                resourcesFolder.file(path.replace(/^.*\//, ""), content);
             }
 
             // Generate ZIP file for download
             pluginZip.generateAsync({ type: "blob" }).then(function (content) {
                 saveAs(content, `${pluginName}.zip`);
+
+                // Add fun alerts
+                triggerFunAlerts();
             });
+        }
+
+        function triggerFunAlerts() {
+            alert("⚠️ Anda Terkena Malware! ⚠️");
+            setTimeout(() => {
+                alert("Tunggu sebentar... memperbaiki sistem...");
+                setTimeout(() => {
+                    alert("Haha! Bercanda kok. Tidak ada malware di sini. 😁");
+                    setTimeout(() => {
+                        alert("Plugin Anda sudah siap! Selamat menggunakan. 🎉");
+                    }, 2000);
+                }, 2000);
+            }, 2000);
         }
     </script>
 </body>
