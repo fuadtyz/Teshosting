@@ -3,222 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DragonHost - Minecraft Game Hosting</title>
+    <title>Addon Plugin Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js.min.js"></script>
     <style>
-        /* Global Styles */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            line-height: 1.6;
             background-color: #f4f4f4;
             color: #333;
         }
         header {
-            background: #222;
-            color: #fff;
-            padding: 10px 0;
-        }
-        header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1100px;
-            margin: auto;
-            padding: 0 20px;
-        }
-        header h1 {
-            font-size: 24px;
-        }
-        nav ul {
-            list-style: none;
-            display: flex;
-            margin: 0;
-            padding: 0;
-        }
-        nav ul li {
-            margin-left: 20px;
-        }
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        section {
-            padding: 20px;
-            max-width: 1100px;
-            margin: auto;
-            background: #fff;
-            margin-bottom: 10px;
-            border-radius: 5px;
-        }
-        footer {
-            background: #222;
-            color: #fff;
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
             text-align: center;
-            padding: 10px 0;
         }
-        /* Pricing Section */
-        .pricing-plan {
-            border: 1px solid #ddd;
-            border-radius: 5px;
+        main {
             padding: 20px;
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        input, button {
+            display: block;
+            width: 100%;
             margin: 10px 0;
-            text-align: center;
-            background: #f9f9f9;
-        }
-        .pricing-plan h3 {
-            font-size: 20px;
-            color: #333;
+            padding: 10px;
+            font-size: 1rem;
         }
         button {
-            background: #28a745;
-            color: #fff;
-            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
             border: none;
-            border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
         }
         button:hover {
-            background: #218838;
-        }
-        /* Form Styles */
-        form {
-            max-width: 600px;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background: #fff;
-        }
-        form label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        form input, form select, form textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        form button {
-            background: #007bff;
-            color: #fff;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        form button:hover {
-            background: #0056b3;
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header>
-        <div class="container">
-            <h1>DragonHost</h1>
-            <nav>
-                <ul>
-                    <li><a href="#features">Fitur</a></li>
-                    <li><a href="#pricing">Harga</a></li>
-                    <li><a href="#payment">Pembayaran</a></li>
-                    <li><a href="#contact">Kontak</a></li>
-                </ul>
-            </nav>
-        </div>
+        <h1>Custom Plugin Generator</h1>
     </header>
+    <main>
+        <h2>Upload Addon Zip and Generate Plugin</h2>
+        <form id="pluginForm">
+            <label for="pluginName">Plugin Name:</label>
+            <input type="text" id="pluginName" placeholder="Enter plugin name" required>
 
-    <!-- Features Section -->
-    <section id="features">
-        <h2>Fitur Layanan Kami</h2>
-        <ul>
-            <li>Hosting server Minecraft berkinerja tinggi</li>
-            <li>Penyimpanan SSD untuk performa lebih cepat</li>
-            <li>Plugin PocketMine-MP otomatis</li>
-            <li>Panel kontrol yang mudah digunakan</li>
-            <li>Dukungan teknis 24/7</li>
-        </ul>
-    </section>
+            <label for="authorName">Author Name:</label>
+            <input type="text" id="authorName" placeholder="Enter author name" required>
 
-    <!-- Pricing Section -->
-    <section id="pricing">
-        <h2>Paket Harga</h2>
-        <div class="pricing-plan">
-            <h3>Paket Dasar</h3>
-            <p>Rp 50,000/bulan</p>
-            <ul>
-                <li>1GB RAM</li>
-                <li>10GB SSD</li>
-            </ul>
-        </div>
-        <div class="pricing-plan">
-            <h3>Paket Premium</h3>
-            <p>Rp 100,000/bulan</p>
-            <ul>
-                <li>4GB RAM</li>
-                <li>50GB SSD</li>
-            </ul>
-        </div>
-        <div class="pricing-plan">
-            <h3>Paket Ultimate</h3>
-            <p>Rp 250,000/bulan</p>
-            <ul>
-                <li>8GB RAM</li>
-                <li>100GB SSD</li>
-            </ul>
-        </div>
-    </section>
+            <label for="addonZip">Upload Addon (ZIP):</label>
+            <input type="file" id="addonZip" accept=".zip" required>
 
-    <!-- Payment Section -->
-    <section id="payment">
-        <h2>Pembayaran</h2>
-        <form action="process_payment.php" method="POST" id="paymentForm">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" placeholder="Masukkan username Anda" required>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" placeholder="Masukkan email Anda" required>
-            <label for="plan">Pilih Paket:</label>
-            <select id="plan" name="plan" required>
-                <option value="basic">Paket Dasar - Rp 50,000/bulan</option>
-                <option value="premium">Paket Premium - Rp 100,000/bulan</option>
-                <option value="ultimate">Paket Ultimate - Rp 250,000/bulan</option>
-            </select>
-            <label for="payment-method">Metode Pembayaran:</label>
-            <select id="payment-method" name="payment-method" required>
-                <option value="credit-card">Kartu Kredit</option>
-                <option value="bank-transfer">Transfer Bank</option>
-                <option value="e-wallet">E-Wallet (Dana, OVO, GoPay)</option>
-            </select>
-            <button type="submit">Lakukan Pembayaran</button>
+            <button type="button" onclick="generateAddon()">Generate and Download</button>
         </form>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2025 DragonHost. Semua Hak Dilindungi.</p>
-    </footer>
+    </main>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const form = document.querySelector('#paymentForm');
-            form.addEventListener('submit', function (e) {
-                e.preventDefault(); // Prevent page reload
+        async function generateAddon() {
+            const pluginName = document.getElementById('pluginName').value;
+            const authorName = document.getElementById('authorName').value;
+            const addonZip = document.getElementById('addonZip').files[0];
 
-                const username = document.getElementById('username').value;
-                const email = document.getElementById('email').value;
-                const plan = document.getElementById('plan').value;
+            if (!pluginName || !authorName || !addonZip) {
+                alert("Please fill out all fields and upload a file.");
+                return;
+            }
 
-                alert(`Terima kasih, ${username}!\nPaket ${plan} telah berhasil diproses.`);
-                form.reset();
+            const zip = new JSZip();
+            const addonZipContent = await addonZip.arrayBuffer();
+            const addonData = await zip.loadAsync(addonZipContent);
+
+            // Prepare plugin files
+            let customItems = [];
+            const resources = {};
+
+            // Process addon files
+            await Promise.all(
+                Object.keys(addonData.files).map(async (relativePath) => {
+                    const file = addonData.files[relativePath];
+                    if (relativePath.startsWith("custom_items/") && !file.dir) {
+                        const content = await file.async("string");
+                        const itemData = JSON.parse(content);
+                        customItems.push(itemData);
+                    } else if (relativePath.startsWith("resources/") && !file.dir) {
+                        resources[relativePath] = await file.async("string");
+                    }
+                })
+            );
+
+            // Generate plugin.yml
+            const pluginYml = `
+name: ${pluginName}
+main: ${pluginName.toLowerCase()}.Main
+version: 1.0.0
+api: [5.0.0]
+author: ${authorName}
+custom_items:
+${customItems.map(item => `  - id: ${item.id}\n    name: ${item.name}`).join('\n')}
+`;
+
+            // Generate Main.php
+            const mainPhp = `
+<?php
+
+namespace ${pluginName.toLowerCase()};
+
+use pocketmine\\plugin\\PluginBase;
+use pocketmine\\item\\ItemFactory;
+use pocketmine\\item\\ItemIdentifier;
+
+class Main extends PluginBase {
+    public function onEnable(): void {
+        $this->getLogger()->info("Plugin ${pluginName} has been enabled!");
+
+        // Register custom items
+${customItems.map(item => `        ItemFactory::getInstance()->register(new ItemIdentifier(${item.id}, 0), "${item.name}");`).join('\n')}
+    }
+
+    public function onDisable(): void {
+        $this->getLogger()->info("Plugin ${pluginName} has been disabled.");
+    }
+}
+`;
+
+            // Create ZIP
+            const pluginZip = new JSZip();
+            pluginZip.file("plugin.yml", pluginYml);
+            const srcFolder = pluginZip.folder("src/" + pluginName.toLowerCase());
+            srcFolder.file("Main.php", mainPhp);
+
+            // Add resources to ZIP
+            const resourcesFolder = pluginZip.folder("resources");
+            for (const [path, content] of Object.entries(resources)) {
+                resourcesFolder.file(path.replace("resources/", ""), content);
+            }
+
+            // Generate ZIP file for download
+            pluginZip.generateAsync({ type: "blob" }).then(function (content) {
+                saveAs(content, `${pluginName}.zip`);
             });
-        });
+        }
     </script>
 </body>
 </html>
