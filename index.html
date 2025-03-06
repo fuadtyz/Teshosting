@@ -3,41 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Akses Kamera Depan & Belakang</title>
+    <title>Cermin Digital</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        video {
+            transform: scaleX(-1); /* Membalikkan tampilan seperti cermin */
+            border: 2px solid #000;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
 </head>
 <body>
-    <h1>Kamera Depan & Belakang</h1>
-    <video id="video" autoplay playsinline></video>
-    <br>
-    <button id="frontCamera">Kamera Depan</button>
-    <button id="backCamera">Kamera Belakang</button>
-    
-    <script>
-        const videoElement = document.getElementById('video');
+    <video id="mirror" autoplay playsinline></video>
 
-        async function startCamera(facingMode) {
+    <script>
+        const videoElement = document.getElementById('mirror');
+
+        async function startMirror() {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({
-                    video: { facingMode: facingMode },
+                    video: { facingMode: 'user' }, // Kamera depan
                     audio: false
                 });
                 videoElement.srcObject = stream;
             } catch (error) {
                 console.error('Gagal mengakses kamera:', error);
-                alert('Tidak dapat mengakses kamera. Pastikan izin kamera telah diberikan.');
+                alert('Tidak dapat mengakses kamera. Pastikan izin kamera diberikan.');
             }
         }
 
-        document.getElementById('frontCamera').addEventListener('click', () => {
-            startCamera('user'); // Kamera depan
-        });
-
-        document.getElementById('backCamera').addEventListener('click', () => {
-            startCamera('environment'); // Kamera belakang
-        });
-
-        // Secara default, akses kamera depan saat halaman dimuat
-        startCamera('user');
+        startMirror();
     </script>
 </body>
 </html>
