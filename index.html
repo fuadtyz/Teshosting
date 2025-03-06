@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>hati hati Website</title>
+  <title>Prank Website</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -29,8 +29,7 @@
     button:hover {
       background: #cc0000;
     }
-    #hiddenButton {
-      position: absolute;
+    #hiddenButton: absolute;
       top: 5%;
       left: 5%;
       background: transparent;
@@ -47,22 +46,42 @@
   <button onclick="alert('Nope, you can\'t exit!')">Click Me!</button>
   <button id="hiddenButton" onclick="escapeTrap()">Secret Exit</button>
   <script>
+    // Blokir shortcut keyboard
     document.addEventListener('keydown', (e) => {
-      e.preventDefault(); // Blokir shortcut keyboard
+      e.preventDefault();
     });
 
+    // Peringatan saat mencoba keluar
     window.onbeforeunload = function () {
       return "Are you sure you want to leave?";
     };
 
+    // Pop-up setiap 20 menit
     setInterval(() => {
       alert("You are stuck here!");
-    }, 1200000); // Pop-up setiap 20 menit (1200000 ms)
+    }, 1200000);
 
+    // Aktifkan mode fullscreen
+    function goFullscreen() {
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+      } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+        document.documentElement.mozRequestFullScreen();
+      } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
+        document.documentElement.webkitRequestFullscreen();
+      } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+        document.documentElement.msRequestFullscreen();
+      }
+    }
+
+    goFullscreen();
+
+    // Fungsi untuk keluar melalui tombol rahasia
     function escapeTrap() {
       alert("Congratulations! You found the secret button!");
       window.onbeforeunload = null; // Matikan blokir keluar
       document.removeEventListener('keydown', (e) => e.preventDefault()); // Aktifkan keyboard kembali
+      document.exitFullscreen(); // Keluar dari mode fullscreen
     }
   </script>
 </body>
