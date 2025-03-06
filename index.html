@@ -3,88 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PC Komputer Windows</title>
+    <title>Simulasi Laptop Interaktif</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f4f4f9;
-            color: #333;
-        }
-
-        header {
-            background-color: #0078d7;
-            color: white;
-            padding: 10px 20px;
             text-align: center;
         }
 
-        nav ul {
-            list-style: none;
-            padding: 0;
+        #laptop {
+            width: 400px;
+            margin: 50px auto;
+            border: 3px solid #333;
+            border-radius: 10px;
+            background-color: #555;
+            position: relative;
         }
 
-        nav ul li {
-            display: inline;
-            margin: 0 10px;
-        }
-
-        nav ul li a {
+        #screen {
+            width: 380px;
+            height: 200px;
+            margin: 10px auto;
+            background-color: #222;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             color: white;
-            text-decoration: none;
+            font-size: 20px;
         }
 
-        section {
-            padding: 20px;
-            margin: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        #screen.off {
+            background-color: #000;
+            color: #444;
         }
 
-        footer {
-            text-align: center;
-            padding: 10px;
+        #keyboard {
+            width: 380px;
+            margin: 10px auto;
             background-color: #333;
+            border-radius:  padding: 10px;
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 5px;
+        }
+
+        .key {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background-color: #666;
+            border-radius: 3px;
+            cursor: pointer;
             color: white;
+            font-size: 14px;
+            line-height: 30px;
+            text-align: center;
+        }
+
+        .key:hover {
+            background-color: #888;
+        }
+
+        #power {
+            width: 50px;
+            height: 25px;
+            background-color: red;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px auto;
+        }
+
+        #power.on {
+            background-color: green;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Selamat Datang di Dunia PC Windows</h1>
-        <nav>
-            <ul>
-                <li><a href="#fitur">Fitur</a></li>
-                <li><a href="#spesifikasi">Spesifikasi</a></li>
-                <li><a href="#kontak">Kontak</a></li>
-            </ul>
-        </nav>
-    </header>
+    <h1>Simulasi Laptop Interaktif</h1>
+    <div id="laptop">
+        <div id="screen" class="off">Laptop Dimatikan</div>
+        <div id="keyboard">
+            <span class="key">A</span>
+            <span class="key">B</span>
+            <span class="key">C</span>
+            <span class="key">D</span>
+            <span class="key">E</span>
+            <span class="key">F</span>
+            <span class="key">G</span>
+            <span class="key">H</span>
+            <span class="key">I</span>
+            <span class="key">J</span>
+        </div>
+        <button id="power" class="off">OFF</button>
+    </div>
+    <script>
+        const screen = document.getElementById('screen');
+        const keys = document.querySelectorAll('.key');
+        const powerButton = document.getElementById('power');
+        let isOn = false;
 
-    <section id="fitur">
-        <h2>Fitur Unggulan</h2>
-        <p>PC Windows hadir dengan berbagai fitur canggih seperti multitasking, keamanan tinggi, dan dukungan aplikasi yang luas.</p>
-    </section>
+        // Tombol daya untuk menyalakan dan mematikan laptop
+        powerButton.addEventListener('click', () => {
+            isOn = !isOn;
+            if (isOn) {
+                screen.textContent = 'Laptop Menyala';
+                screen.classList.remove('off');
+                powerButton.textContent = 'ON';
+                powerButton.classList.add('on');
+            } else {
+                screen.textContent = 'Laptop Dimatikan';
+                screen.classList.add('off');
+                powerButton.textContent = 'OFF';
+                powerButton.classList.remove('on');
+            }
+        });
 
-    <section id="spesifikasi">
-        <h2>Spesifikasi</h2>
-        <ul>
-            <li>Prosesor: Intel/AMD</li>
-            <li>RAM: Minimal 4GB (Rekomendasi 8GB atau lebih)</li>
-            <li>Sistem Operasi: Windows 10/11</li>
-        </ul>
-    </section>
-
-    <section id="kontak">
-        <h2>Hubungi Kami</h2>
-        <p>Email: support@pcwindows.com</p>
-        <p>Telepon: +62 123-4567-890</p>
-    </section>
-
-    <footer>
-        <p>&copy; 2025 PC Komputer Windows. Semua hak cipta dilindungi.</p>
-    </footer>
+        // Interaksi dengan keyboard
+        keys.forEach(key => {
+            key.addEventListener('click', () => {
+                if (isOn) {
+                    screen.textContent = `Tombol ${key.textContent} ditekan!`;
+                } else {
+                    screen.textContent = 'Nyalakan laptop terlebih dahulu!';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
