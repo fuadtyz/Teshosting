@@ -3,65 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enter IP and Get Password</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        .container {
-            margin: 50px auto;
-            max-width: 400px;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        input, button {
-            width: 100%;
-            margin: 10px 0;
-            padding: 10px;
-            font-size: 1rem;
-        }
-        button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        #result {
-            margin-top: 20px;
-            font-weight: bold;
-        }
-    </style>
+    <title>Akses Kamera Depan & Belakang</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Get Password by IP</h1>
-        <form id="getPasswordForm">
-            <input type="text" id="ip" placeholder="Enter VPS IP" required>
-            <button type="submit">Get Password</button>
-        </form>
-        <p id="result"></p>
-    </div>
+    <h1>Kamera Depan & Belakang</h1>
+    <video id="video" autoplay playsinline></video>
+    <br>
+    <button id="frontCamera">Kamera Depan</button>
+    <button id="backCamera">Kamera Belakang</button>
+    
     <script>
-        document.getElementById("getPasswordForm").addEventListener("submit", function(event) {
-            event.preventDefault();
+        const videoElement = document.getElementById('video');
 
-            const ip = document.getElementById("ip").value;
-            const result = document.getElementById("result");
+        async function startCamera(facingMode) {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: facingMode },
+                    audio: false
+                });
+                videoElement.srcObject = stream;
+            } catch (error) {
+                console.error('Gagal mengakses kamera:', error);
+                alert('Tidak dapat mengakses kamera. Pastikan izin kamera telah diberikan.');
+            }
+        }
 
-            // Simulasi: Tampilkan password berdasarkan IP yang dimasukkan
-            result.innerText = `Password for ${ip}: password_${ip.replace(/\./g, '')}`;
-            result.style.color = "green";
+        document.getElementById('frontCamera').addEventListener('click', () => {
+            startCamera('user'); // Kamera depan
         });
+
+        document.getElementById('backCamera').addEventListener('click', () => {
+            startCamera('environment'); // Kamera belakang
+        });
+
+        // Secara default, akses kamera depan saat halaman dimuat
+        startCamera('user');
     </script>
 </body>
 </html>
