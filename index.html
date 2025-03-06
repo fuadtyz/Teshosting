@@ -3,100 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Tembak-Tembakan</title>
+    <title>Panel Pterodactyl Gratis</title>
     <style>
         body {
-            margin: 0;
-            overflow: hidden;
-            background-color: black;
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            text-align: center;
+            padding: 20px;
         }
-        canvas {
+        form {
+            display: inline-block;
+            text-align: left;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        label, input, button, p {
             display: block;
+            width: 100%;
+            margin-bottom: 10px;
         }
-        #score {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 20px;
+        button {
+            background-color: #007BFF;
             color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
         }
     </style>
+    <script>
+        // Spin Kapasitas
+        function spinStorage() {
+            const options = [5, 10, 20, 50];
+            const randomIndex = Math.floor(Math.random() * options.length);
+            const selectedStorage = options[randomIndex];
+            document.getElementById('spin-result').textContent = `Kapasitas: ${selectedStorage} GB`;
+            document.getElementById('storage').value = selectedStorage;
+        }
+    </script>
 </head>
 <body>
-    <div id="score">Skor: 0</div>
-    <canvas id="gameCanvas"></canvas>
+    <h1>Panel Pterodactyl Gratis</h1>
+    <form method="POST">
+        <label for="name">Nama:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <button type="button" onclick="spinStorage()">Spin Kapasitas</button>
+        <p id="spin-result">Kapasitas: Belum Dipilih</p>
+        <input type="hidden" id="storage" name="storage">
+        <button type="submit">Daftar</button>
+    </form>
 
-    <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const scoreElement = document.getElementById('score');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+    <?php
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $name = $_POST['name'];
+        $password = $_POST['password'];
+        $storage = $_POST['storage'];
 
-        let score = 0;
-
-        class Target {
-            constructor(x, y, size) {
-                this.x = x;
-                this.y = y;
-                this.size = size;
-                this.color = 'red';
-            }
-
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
-                ctx.fill();
-                ctx.closePath();
-            }
+        // Validasi input
+        if (empty($name) || empty($password) || empty($storage)) {
+            echo '<p style="color: red;">Semua field wajib diisi!</p>';
+            exit;
         }
 
-        const targets = [];
+        // Konfigurasi API Pterodactyl
+        $apiKey = 'ptla_LV6JHmhDGuEXGQtFLOjAkSlRpNXPvESVWqdsTMW1Ice';
+        $url = 'https://ikyystore.ctyl.biz.id/api/application/users';
 
-        function spawnTarget() {
-            const size = Math.random() * 20 + 20;
-            const x = Math.random() * (canvas.width - size * 2) + size;
-            const y = Math.random() * (canvas.height - size * 2) + size;
-            const target = new Target(x, y, size);
-            targets.push(target);
+        // Data untuk akun baru
+        $data = [
+            "username" => $name,
+            "email" => $name . "@example.com",
+            "password" => $password,
+            "first_name" => $name,
+            "last_name" => "User",
+            "root_admin" => false
+        ];
 
-            // Hapus target setelah beberapa detik
-            setTimeout(() => {
-                const index = targets.indexOf(target);
-                if (index !== -1) {
-                    targets.splice(index, 1);
-                }
-            }, 3000);
+        // Header dan payload request
+        $options = [
+            'http' => [
+                'header'  => "Content-Type: application/json\r\nAuthorization: Bearer $apiKey\r\n",
+                'method'  => 'POST',
+                'content' => json_encode($data),
+            ],
+        ];
+
+        // Eksekusi request ke API
+        $context  = stream_context_create($options);
+        $response = file_get_contents($url, false, $context);
+
+        if ($response === FALSE) {
+            echo '<p style="color: red;">Gagal membuat akun. Silakan periksa konfigurasi API.</p>';
+            exit;
         }
 
-        canvas.addEventListener('click', (event) => {
-            const rect = canvas.getBoundingClientRect();
-            const mouseX = event.clientX - rect.left;
-            const mouseY = event.clientY - rect.top;
-
-            targets.forEach((target, index) => {
-                const distance = Math.sqrt(
-                    (mouseX - target.x) ** 2 + (mouseY - target.y) ** 2
-                );
-
-                if (distance < target.size) {
-                    targets.splice(index, 1);
-                    score += 10;
-                    scoreElement.textContent = `Skor: ${score}`;
-                }
-            });
-        });
-
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            targets.forEach((target) => target.draw());
-            requestAnimationFrame(draw);
-        }
-
-        setInterval(spawnTarget, 1000);
-        draw();
-    </script>
+        echo "<p style='color: green;'>Akun berhasil dibuat dengan kapasitas penyimpanan: $storage GB!</p>";
+    }
+    ?>
 </body>
 </html>
