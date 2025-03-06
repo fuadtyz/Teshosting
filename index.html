@@ -3,44 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cermin Digital</title>
+    <title>Game Tembak-Tembakan</title>
     <style>
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
-            background-color: #f0f0f0;
+            overflow: hidden;
+            background-color: black;
         }
-        video {
-            transform: scaleX(-1); /* Membalikkan tampilan seperti cermin */
-            border: 2px solid #000;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        canvas {
+            display: block;
+        }
+        #score {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 20px;
+            color: white;
         }
     </style>
 </head>
 <body>
-    <video id="mirror" autoplay playsinline></video>
+    <div id="score">Skor: 0</div>
+    <canvas id="gameCanvas"></canvas>
 
     <script>
-        const videoElement = document.getElementById('mirror');
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreElement = document.getElementById('score');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-        async function startMirror() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    video: { facingMode: 'user' }, // Kamera depan
-                    audio: false
-                });
-                videoElement.srcObject = stream;
-            } catch (error) {
-                console.error('Gagal mengakses kamera:', error);
-                alert('Tidak dapat mengakses kamera. Pastikan izin kamera diberikan.');
+        let score = 0;
+
+        class Target {
+            constructor(x, y, size) {
+                this.x = x;
+                this.y = y;
+                this.size = size;
+                this.color = 'red';
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.closePath();
             }
         }
 
-        startMirror();
+        const targets = [];
+
+        function spawnTarget() {
+            const size = Math.random() * 20 + 20;
+            const x = Math.random() * (canvas.width - size * 2) + size;
+            const y = Math.random() * (canvas.height - size * 2) + size;
+            const target = new Target(x, y, size);
+            targets.push(target);
+
+            // Hapus target setelah beberapa detik
+            setTimeout(() => {
+                const index = targets.indexOf(target);
+                if (index !== -1) {
+                    targets.splice(index, 1);
+                }
+            }, 3000);
+        }
+
+        canvas.addEventListener('click', (event) => {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = event.clientX - rect.left;
+            const mouseY = event.clientY - rect.top;
+
+            targets.forEach((target, index) => {
+                const distance = Math.sqrt(
+                    (mouseX - target.x) ** 2 + (mouseY - target.y) ** 2
+                );
+
+                if (distance < target.size) {
+                    targets.splice(index, 1);
+                    score += 10;
+                    scoreElement.textContent = `Skor: ${score}`;
+                }
+            });
+        });
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            targets.forEach((target) => target.draw());
+            requestAnimationFrame(draw);
+        }
+
+        setInterval(spawnTarget, 1000);
+        draw();
     </script>
 </body>
 </html>
