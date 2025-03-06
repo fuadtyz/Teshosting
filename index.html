@@ -1,91 +1,90 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tebak Warna yang Berbeda</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background-color: #f4f4f4;
-      padding: 20px;
-    }
-    h1 {
-      color: #4caf50;
-    }
-    .color-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 100px);
-      grid-gap: 15px;
-      justify-content: center;
-      margin-top: 20px;
-    }
-    .color-box {
-      width: 100px;
-      height: 100px;
-      cursor: pointer;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      transition: transform 0.2s;
-    }
-    .color-box:hover {
-      transform: scale(1.1);
-    }
-    #result {
-      margin-top: 20px;
-      font-size: 18px;
-      font-weight: bold;
-    }
-  </style>
-</head>
-<body>
-  <h1>Tebak Warna yang Berbeda</h1>
-  <p>Cari warna yang berbeda di antara warna-warna yang mirip!</p>
-  <div id="colorGrid" class="color-grid"></div>
-  <p id="result"></p>
-  <script>
-    const baseColor = "rgb(255, 0, 0)"; // Warna dasar (merah terang)
-    const oddColor = "rgb(200, 0, 0)"; // Warna yang berbeda (merah lebih gelap)
-    const gridSize = 16; // Total kotak warna
-    const colorGrid = document.getElementById("colorGrid");
-    const result = document.getElementById("result");
-
-    // Fungsi untuk membuat grid warna
-    function generateColors() {
-      colorGrid.innerHTML = ""; // Reset grid
-      const oddColorPosition = Math.floor(Math.random() * gridSize); // Posisi warna yang berbeda
-
-      for (let i = 0; i < gridSize; i++) {
-        const colorBox = document.createElement("div");
-        colorBox.classList.add("color-box");
-
-        if (i === oddColorPosition) {
-          // Kotak dengan warna berbeda
-          colorBox.style.backgroundColor = oddColor;
-          colorBox.addEventListener("click", () => {
-            result.textContent = "Benar! Kamu menemukan warna yang berbeda!";
-            result.style.color = "green";
-            setTimeout(() => {
-              result.textContent = ""; // Hapus pesan setelah beberapa detik
-              generateColors(); // Buat ulang grid
-            }, 1000);
-          });
-        } else {
-          // Kotak dengan warna dasar
-          colorBox.style.backgroundColor = baseColor;
-          colorBox.addEventListener("click", () => {
-            result.textContent = "Salah! Coba lagi.";
-            result.style.color = "red";
-          });
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Komputer Windows</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
         }
 
-        colorGrid.appendChild(colorBox);
-      }
-    }
+        header {
+            background-color: #0078d7;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
 
-    // Mulai permainan dengan membuat grid pertama
-    generateColors();
-  </script>
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 10px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        section {
+            padding: 20px;
+            margin: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Selamat Datang di Dunia PC Windows</h1>
+        <nav>
+            <ul>
+                <li><a href="#fitur">Fitur</a></li>
+                <li><a href="#spesifikasi">Spesifikasi</a></li>
+                <li><a href="#kontak">Kontak</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="fitur">
+        <h2>Fitur Unggulan</h2>
+        <p>PC Windows hadir dengan berbagai fitur canggih seperti multitasking, keamanan tinggi, dan dukungan aplikasi yang luas.</p>
+    </section>
+
+    <section id="spesifikasi">
+        <h2>Spesifikasi</h2>
+        <ul>
+            <li>Prosesor: Intel/AMD</li>
+            <li>RAM: Minimal 4GB (Rekomendasi 8GB atau lebih)</li>
+            <li>Sistem Operasi: Windows 10/11</li>
+        </ul>
+    </section>
+
+    <section id="kontak">
+        <h2>Hubungi Kami</h2>
+        <p>Email: support@pcwindows.com</p>
+        <p>Telepon: +62 123-4567-890</p>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 PC Komputer Windows. Semua hak cipta dilindungi.</p>
+    </footer>
 </body>
 </html>
