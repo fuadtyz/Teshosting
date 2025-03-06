@@ -39,7 +39,7 @@
     <script>
         // Spin Kapasitas
         function spinStorage() {
-            const options = [5, 10, 20, 50];
+            const options = [5, 10, 20, 50]; // Kapasitas dalam GB
             const randomIndex = Math.floor(Math.random() * options.length);
             const selectedStorage = options[randomIndex];
             document.getElementById('spin-result').textContent = `Kapasitas: ${selectedStorage} GB`;
@@ -73,7 +73,7 @@
         }
 
         // Konfigurasi API Pterodactyl
-        $apiKey = 'ptla_LV6JHmhDGuEXGQtFLOjAkSlRpNXPvESVWqdsTMW1Ice';
+        $apiKey = 'ptlc_87JS27oN6eqa0Svlf6FIRskv4r0EdAsqQ9i5Ehipvwf';
         $url = 'https://ikyystore.ctyl.biz.id/api/application/users';
 
         // Data untuk akun baru
