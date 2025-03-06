@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Local VPS Simulation</title>
+    <title>Enter IP and Get Password</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -20,7 +20,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-        input, select, button {
+        input, button {
             width: 100%;
             margin: 10px 0;
             padding: 10px;
@@ -36,48 +36,31 @@
         button:hover {
             background-color: #0056b3;
         }
-        #status {
+        #result {
             margin-top: 20px;
-            color: green;
             font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Simulated VPS Creator</h1>
-        <form id="vpsForm">
-            <input type="text" id="username" placeholder="Username" required>
-            <select id="os">
-                <option value="ubuntu">Ubuntu</option>
-                <option value="debian">Debian</option>
-                <option value="centos">CentOS</option>
-            </select>
-            <input type="password" id="password" placeholder="Root Password" required>
-            <button type="submit">Create VPS</button>
+        <h1>Get Password by IP</h1>
+        <form id="getPasswordForm">
+            <input type="text" id="ip" placeholder="Enter VPS IP" required>
+            <button type="submit">Get Password</button>
         </form>
-        <p id="status"></p>
+        <p id="result"></p>
     </div>
     <script>
-        document.getElementById("vpsForm").addEventListener("submit", function(event) {
+        document.getElementById("getPasswordForm").addEventListener("submit", function(event) {
             event.preventDefault();
 
-            // Ambil input dari pengguna
-            const username = document.getElementById("username").value;
-            const os = document.getElementById("os").value;
-            const password = document.getElementById("password").value;
+            const ip = document.getElementById("ip").value;
+            const result = document.getElementById("result");
 
-            const status = document.getElementById("status");
-            status.innerText = "Simulating VPS creation...";
-
-            // Simulasi pembuatan VPS (tanpa backend)
-            setTimeout(() => {
-                status.innerText = `VPS Created Successfully!\n
-                Username: ${username}\n
-                Operating System: ${os}\n
-                Root Password: ${password}\n
-                SSH Command: ssh root@127.0.0.1`;
-            }, 3000); // Simulasi proses selama 3 detik
+            // Simulasi: Tampilkan password berdasarkan IP yang dimasukkan
+            result.innerText = `Password for ${ip}: password_${ip.replace(/\./g, '')}`;
+            result.style.color = "green";
         });
     </script>
 </body>
